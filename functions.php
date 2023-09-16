@@ -178,3 +178,43 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
 
+function custom_block_categories( $categories, $post ) {
+    return array_merge(
+        $categories,
+        array(
+            array(
+                'slug' => 'custom-category-slug',
+                'title' => __( 'Custom Category Name', 'your-text-' ),
+
+            ),
+            array(
+                'slug' => 'custom-banners-slug',
+                'title' => __( 'Custom Banners ', '' ),
+            ),
+
+            array(
+                'slug' => 'custom-headers-slug',
+                'title' => __( 'Custom Header ', '' ),
+            ),
+        )
+    );
+}
+add_filter( 'block_categories', 'custom_block_categories', 10, 2 );
+
+
+/**
+ *  Register ACF Blocks
+ */
+
+function register_acf_blocks() {
+    /**
+     * We register our block's with WordPress's handy
+     * register_block_type();
+     *
+     * @link https://developer.wordpress.org/reference/functions/register_block_type/
+     */
+    register_block_type( __DIR__ . '/blocks/testimonial-example-1' );
+    register_block_type( __DIR__ . '/blocks/header-1' );
+}
+// Here we call our register_acf_block() function on init.
+add_action( 'init', 'register_acf_blocks' );
